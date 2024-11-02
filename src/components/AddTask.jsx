@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import {
+  TasksContext,
+  TasksDispatchContext,
+} from "../../contexts/TasksContext";
+import { getNextId } from "../../utils/getNextId";
 
-const AddTask = ({ onAdd }) => {
+const AddTask = () => {
   const [text, setText] = useState("");
-
-  // const handleChangeText = (event) => {
-  //   setText(event.target.value);
-  // };
+  const tasks = useContext(TasksContext);
+  const dispatch = useContext(TasksDispatchContext);
 
   return (
     <>
-      {/* <input placeholder="Add task" value={text} onChange={handleChangeText} /> */}
       <input
         placeholder="Add task"
         value={text}
@@ -18,7 +20,11 @@ const AddTask = ({ onAdd }) => {
       <button
         onClick={() => {
           setText("");
-          onAdd(text);
+          dispatch({
+            type: "added",
+            id: getNextId(tasks),
+            text,
+          });
         }}
       >
         Add
